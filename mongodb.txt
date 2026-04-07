@@ -1,2 +1,0 @@
-rugH1XGHc9nqxacS
-mongodb+srv://harini080922_db_user:rugH1XGHc9nqxacS@cluster0.u278sic.mongodb.net/
