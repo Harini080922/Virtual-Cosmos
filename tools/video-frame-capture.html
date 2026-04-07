@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Video Frame Capture</title>
+  <style>
+    html, body {
+      margin: 0;
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    #wrap {
+      width: 1920px;
+      height: 1080px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    canvas {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+    }
+
+    #label {
+      position: absolute;
+      left: 16px;
+      top: 16px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <div id="label">Loading...</div>
+    <canvas id="canvas" width="1920" height="1080"></canvas>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get("src");
+    const time = Number(params.get("t") || "0");
+    const video = document.createElement("video");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const label = document.getElementById("label");
+
+    async function capture() {
+      label.textContent = `Seeking to ${time}s`;
+      video.src = source;
+      video.muted = true;
+      video.playsInline = true;
+      video.crossOrigin = "anonymous";
+
+      await new Promise((resolve, reject) => {
+        video.addEventListener("loadeddata", resolve, { once: true });
+        video.addEventListener("error", reject, { once: true });
+      });
+
+      await new Promise((resolve, reject) => {
+        const onSeeked = () => resolve();
+        video.addEventListener("seeked", onSeeked, { once: true });
+        video.addEventListener("error", reject, { once: true });
+        video.currentTime = time;
+      });
+
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      label.textContent = `t=${time}s`;
+      document.title = `done-${time}`;
+    }
+
+    capture().catch((err) => {
+      label.textContent = `Error: ${err && err.message ? err.message : err}`;
+      document.title = "error";
+    });
+  </script>
+</body>
+</html>
