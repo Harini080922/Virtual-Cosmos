@@ -78,7 +78,7 @@ cd virtual-cosmos
 ### 2. Backend Setup
 ```bash
 cd backend
-cp .env.example .env
+cp .env.example .env or Copy-Item .env.example .env
 # Edit .env with your MongoDB URI if needed
 npm install
 npm run dev
@@ -146,29 +146,7 @@ VITE_SOCKET_URL=http://localhost:4000
 | `proximity:disconnected` | `{ socketId, roomId }` | Two users left proximity |
 | `chat:message` | `Message` | New chat message in room |
 
----
 
-## 🧠 Core Logic — Proximity Detection
-
-```js
-// Server-side, runs on every user:move event
-function checkProximity(movedSocketId) {
-  const movedUser = users.get(movedSocketId);
-  users.forEach((otherUser, otherSocketId) => {
-    const dist = Math.sqrt(
-      (movedUser.x - otherUser.x) ** 2 + (movedUser.y - otherUser.y) ** 2
-    );
-    const wasConnected = movedUser.connections.has(otherSocketId);
-    const isNowClose = dist < PROXIMITY_RADIUS; // 120px
-
-    if (isNowClose && !wasConnected) {
-      // Connect: add to connections, emit proximity:connected to both
-    } else if (!isNowClose && wasConnected) {
-      // Disconnect: remove from connections, emit proximity:disconnected to both
-    }
-  });
-}
-```
 
 ---
 
@@ -182,6 +160,8 @@ function checkProximity(movedSocketId) {
 
 ---
 
+## 📌 Conclusion
 
+Virtual Cosmos demonstrates real-time multiplayer interaction, proximity-based chat, and smooth 2D rendering in a browser-based environment using the MERN stack and Socket.IO.
 
 
