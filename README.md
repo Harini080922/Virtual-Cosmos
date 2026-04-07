@@ -182,17 +182,6 @@ function checkProximity(movedSocketId) {
 
 ---
 
-## 📹 Demo
 
-> Record a 2–5 minute video showing:
-> 1. Joining the cosmos with a username
-> 2. Moving around with keyboard / click
-> 3. Two users coming close → chat connects
-> 4. Moving apart → chat disconnects
-> 5. Messaging between connected users
 
----
 
-## 📤 Submission
-
-Submit at: https://forms.gle/GtkmYbjw4FVkrCzB8
